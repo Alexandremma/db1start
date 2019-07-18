@@ -1,0 +1,309 @@
+Criação dos Bancos de Dados
+
+create table estado (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    UF VARCHAR(2) NOT NULL,
+    Nome VARCHAR(50) NOT NULL
+)
+
+create table cidade (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    Estado_id INTEGER NOT NULL,
+    Nome VARCHAR(50) NOT NULL,
+    FOREIGN KEY (Estado_id) REFERENCES estado(id)
+)
+
+create table pessoa (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	Nome VARCHAR(50) NOT NULL,
+	CPF VARCHAR(11) NOT NULL UNIQUE
+)
+
+create table usuario (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	Pessoa_id INTEGER NOT NULL,
+	Login VARCHAR(50) NOT NULL,
+	Senha VARCHAR(50) NOT NULL,
+	Papel VARCHAR(50) NOT NULL,
+	FOREIGN KEY (Pessoa_id) REFERENCES pessoa(id)
+)
+
+create table endereco(
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	Cidade_id INTEGER NOT NULL,
+	UF VARCHAR(2) NOT NULL,
+	Logradouro VARCHAR(50) NOT NULL,
+	Numero VARCHAR(50) NOT NULL DEFAULT 'S/N',
+	Complemento VARCHAR(50),
+	CEP VARCHAR(8) NOT NULL,
+	FOREIGN KEY (Cidade_id) REFERENCES cidade(id)
+)
+
+create table pessoa_endereco (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	Pessoa_id INTEGER NOT NULL,
+	Endereco_id iNTEGER NOT NULL,
+	FOREIGN KEY (Pessoa_id) REFERENCES pessoa(id),
+	FOREIGN KEY (Endereco_id) REFERENCES endereco(id)
+)
+
+create table recibo (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	Cidade_id INTEGER NOT NULL,
+	Pessoa_id INTEGER NOT NULL,
+	Emissor_id INTEGER NOT NULL,
+	Descricao VARCHAR(255) NOT NULL,
+	Data_recibo DATE NOT NULL,
+	Valor DOUBLE NOT NULL,
+	FOREIGN KEY (Cidade_id) REFERENCES cidade(id),
+	FOREIGN KEY (Pessoa_id) REFERENCES pessoa(id),
+	FOREIGN KEY (Emissor_id) REFERENCES pessoa(id)
+)
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+Exercícios
+
+1 - faça insert na tabela UF com todas as siglas dos estados do Brasil.
+2 - insira as seguintes cidades:
+Para o SC
+* Chapecó
+* Blumenau
+* Joinville
+
+Para o PR
+* Curitiba
+* Maringá
+* Lunardeli
+* Apucarana
+* Santa fé
+* São Miguel do Iguaçu
+* Arapongas
+* Ponta Grossa
+* Jandaia do Sul
+
+Para o SP
+*Ribeirão Preto
+
+3 - Realize a remoção dos estados que não tem cidades
+
+4 - Insira novas cidades no estado de SP
+
+5 - Realize a atualização do nome das cidades:
+* Lunardeli para Lunardelli
+* Jandaia do Sul para Jandaia
+* Maringá para Cidade Canção
+
+6 - Faça um select que retorne o nome das cidades e seus respectivos estados. Ordene por estados e posteriormente pelo nome das cidades 
+
+7 - Retorne quantas cidades cada estado possui :) (não expliquei ainda)
+dica: veja group by e count()
+
+8 - adicione um campo tipo endereço na tabela de pessoa, os tipos poderão ser: COMERCIAL, RESIDENCIAL
+
+9 - Insira três pessoas na base de dados. Cada uma destas pessoas deve ter dois endereços (um comercial e outro residencial). As cidades que devem ser usadas são do estado do PR (você escolhe).
+
+10 -Insira duas pessoas na base de dados. Cada uma destas pessoas deve ter dois endereços (um comercial e outro residencial). As cidades que devem ser usadas são do estado de SP (você escolhe).
+
+11 - Insira duas pessoas na base de dados. Cada uma destas pessoas deve ter um endereço do tipo comercial. As cidades que devem ser usadas são do estado de SC (você escolhe).
+
+12 - Faça um select que retorne o nome das pessoas e seus respectivos endereços (com cidade e estado). Ordene por nome de pessoa, nome do estado e nome da cidade
+
+13 - remova todos as pessoas que tem endereço da cidade de Ribeirão Preto
+
+14 - Mude todos os endereços residenciais do sistema. Eles devem ter CEP 00000000
+
+15 - Insira dois recibos sendo que eles devem ter clientes residentes no PR e o emitente de servico deve ser o mesmo (não importando o estado). Exemplo: 
+* cliente fusca, da cidade Curitiba, no PR. emitente: DB1, estado PR.
+* cliente Tamara, da cidade Maringá, no PR. emitente: DB1, estado PR.
+
+
+16 - Insira dois recibos sendo que eles devem ter clientes residentes no PR e emitentes de serviços diferentes. Exemplo: 
+* cliente fusca, da cidade Curitiba, no PR. emitente: FCV, estado PR.
+* cliente Tamara, da cidade Maringá, no PR. emitente: USP, estado SP.
+
+17 - Realize uma consulta na base de dados e exiba os seguintes dados:		
+* numero do recibo
+* data emissão do recibo
+* valor do recibo
+* nome do cliente 
+* estado do cliente
+* nome do emitente
+* estado do emitente
+
+ordene por data de recibo, nome do cliente e nome do emitente
+
+18 - Faça uma consulta que mostre:
+* quantidade de recibos emitidos no PR
+* valor total de recibos emitidos no PR
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Respostas
+
+1)
+create table estado (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	UF VARCHAR(2) NOT NULL,
+	Nome VARCHAR(50) NOT NULL
+)
+
+insert into estado (uf, nome) values ('SP', 'São Paulo') -> Fazer este comando com os estados desejados
+
+------------------------------------------------------
+2)
+create table cidade (
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	Estado_id INTEGER NOT NULL,
+	Nome VARCHAR(50) NOT NULL,
+	FOREIGN KEY (Estado_id) RERFERENCES estado(id)
+)
+
+insert into cidade (Estado_id, Nome) values (<Id do estado desejado na tabela estado>, <Nome da cidade desejada>)
+
+------------------------------------------------------
+3)
+delete from estado
+where UF not in ('PR', 'SC', 'SP')
+
+ou
+
+delete from estado
+where not exists (select * from cidade where cidade.estado_id = estado.id);
+
+
+------------------------------------------------------
+4)
+insert into cidade (Estado_id, Nome) values ('SP', "cidade desejada")...
+
+------------------------------------------------------
+5)
+update cidade set nome = 'Lunardelli' where nome = 'Lunardeli'
+
+------------------------------------------------------
+6)
+select cid.nome, uf.uf 
+from cidade cid, estado uf 
+where uf.id = cid.estado_id
+order by uf.uf, cid.nome
+
+------------------------------------------------------
+7)
+select Estado_id, Count(Estado_id)
+from cidade
+group by Estado_id
+
+------------------------------------------------------
+8)
+ALTER TABLE Endereco ADD Tipo_Endereco VARCHAR(11) CHECK (Tipo_endereco = 'Comercial' or Tipo_endereco = 'Residencial')
+
+------------------------------------------------------
+9)
+3 vezes mudando "Nome Pessoa" e CPF => 		insert into pessoa (nome, cpf) values ('Nome Pessoa', "10849393981")
+
+duas vezes por pessoa =>	insert into endereco (cidade_id, uf, logradouro, numero, complemento, cep, tipo_endereco) 
+							values (9, 'PR', 'Av. Cerro Azul', 2649, 'condominio', 87010055, 'Residencial')
+
+relacionar id da pessoa com o id do endereço => 	insert into pessoa_endereco (pessoa_id, endereco_id) values (1, 2)
+
+------------------------------------------------------
+10)
+2 vezes mudando "Nome Pessoa" e CPF => 		insert into pessoa (nome, cpf) values ('Nome Pessoa', "10849393981")
+
+duas vezes por pessoa =>	insert into endereco (cidade_id, uf, logradouro, numero, complemento, cep, tipo_endereco) 
+							values (9, 'SP', 'Av. Cerro Azul', 2649, 'condominio', 87010055, 'Residencial')
+
+relacionar id da pessoa com o id do endereço => 	insert into pessoa_endereco (pessoa_id, endereco_id) values (1, 2)
+
+------------------------------------------------------
+11)
+2 vezes mudando "Nome Pessoa" e CPF => 		insert into pessoa (nome, cpf) values ('Nome Pessoa', "10849393981")
+
+duas vezes por pessoa =>	insert into endereco (cidade_id, uf, logradouro, numero, complemento, cep, tipo_endereco) 
+							values (9, 'SC', 'Av. Cerro Azul', 2649, 'condominio', 87010055, 'Residencial')
+
+relacionar id da pessoa com o id do endereço => 	insert into pessoa_endereco (pessoa_id, endereco_id) values (1, 2)
+
+------------------------------------------------------
+12)
+pessoa endereço cidade estado
+
+select pe.nome as nome_pessoa, cid.nome as nome_cidade, end.uf, end.logradouro
+	from pessoa pe, endereco end, cidade cid, pessoa_endereco pe_end
+	where pe_end.Pessoa_id = pe.id and pe_end.endereco_id = end.id and end.cidade_id = cid.id
+    order by pe.nome, end.uf, cid.nome
+
+------------------------------------------------------
+13)
+delete from pessoa, endereco
+where endereco.cidade_id = 18
+
+
+
+------------------------------------------------------
+14)
+update endereco
+set cep = '00000000' where tipo_endereco = 'Residencial'
+
+------------------------------------------------------
+15)
+insert into recibo (cidade_id, pessoa_id, emissor_id, descricao, data_recibo, valor)
+			values (9, 1, 3, 'teste 1', 2019-07-16, 150)
+			
+insert into recibo (cidade_id, pessoa_id, emissor_id, descricao, data_recibo, valor)
+			values (10, 2, 3, 'teste 2', 2019-07-16, 200)
+
+------------------------------------------------------
+16)
+insert into recibo (cidade_id, pessoa_id, emissor_id, descricao, data_recibo, valor)
+			values (9, 1, 4, 'teste 1', 2019-07-16, 150)
+			
+insert into recibo (cidade_id, pessoa_id, emissor_id, descricao, data_recibo, valor)
+			values (10, 2, 5, 'teste 2', 2019-07-16, 200)
+
+------------------------------------------------------
+17)
+select rec.id as numero_recibo,
+	   rec.data_recibo,
+       rec.valor,
+       cli.nome as nome_cliente,
+       uf_cli.uf as cliente_estado,
+	   emi.nome as nome_emitente,
+	   uf_emi.uf as emitente_estado
+	from recibo rec, pessoa cli, pessoa_endereco pe_end_cli, endereco end_cli, cidade cid_cli, estado uf_cli, 
+					 pessoa emi, pessoa_endereco pe_end_emi, endereco end_emi, cidade cid_emi, estado uf_emi
+	where cli.id = rec.pessoa_id 
+	  and pe_end_cli.pessoa_id = cli.id
+      and pe_end_cli.endereco_id = end_cli.id
+      and cid_cli.id = end_cli.cidade_id 
+      and uf_cli.id = cid_cli.estado_id
+      and end_cli.tipo_endereco = 'Comercial'
+	  and emi.id = rec.emissor_id
+	  and pe_end_emi.pessoa_id = emi.id
+      and pe_end_emi.endereco_id = end_emi.id
+      and cid_emi.id = end_emi.cidade_id 
+      and uf_emi.id = cid_emi.estado_id
+      and end_emi.tipo_endereco = 'Comercial'
+	  
+------------------------------------------------------
+18)
+- Quantidade de recibos emitidos no PR
+
+SELECT COUNT(rec.Emissor_id)
+FROM Recibo rec, Pessoa pe, Pessoa_Endereco pe_end, Endereco end, Cidade cid, Estado est
+WHERE rec.Emissor_id = pe.id
+AND pe.id = pe_end.Pessoa_id
+AND pe_end.Endereco_id = end.id
+AND end.Cidade_id = cid.id
+AND cid.Estado_id = est.id
+AND est.UF = 'PR'
+
+- Valor total de recibos emitidos no PR
+
+SELECT SUM(rec.valor)
+FROM Recibo rec, Pessoa pe, Pessoa_Endereco pe_end, Endereco end, Cidade cid, Estado est
+WHERE rec.Emissor_id = pe.id
+AND pe.id = pe_end.Pessoa_id
+AND pe_end.Endereco_id = end.id
+AND end.Cidade_id = cid.id
+AND cid.Estado_id = est.id
+AND est.UF = 'PR'
