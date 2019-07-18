@@ -1,0 +1,16 @@
+package com.db1.db1start;
+
+public class ExercicioDeInteiro {
+
+	public static void main(String[] args) {
+		Integer numero1 = 1;
+		Integer numero2 = 2;
+		System.out.println(numero1 + numero2);
+	}
+	
+	public static void main(String[] args) {
+		Integer numero3 = 1;
+		Integer numero4 = 2;
+		System.out.println(numero3 - numero4);
+	}
+}

@@ -1,0 +1,10 @@
+package com.db1.db1start;
+
+public class ExercicioDeInteiro {
+
+	public static void main(String[] args) {
+		Integer resultadoSubtracao = SubtracaoNumeros.subtracao(5, 4);
+		System.out.println(resultadoSubtracao);
+	}
+	
+}

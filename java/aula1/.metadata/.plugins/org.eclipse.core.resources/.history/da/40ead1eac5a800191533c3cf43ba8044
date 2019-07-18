@@ -1,0 +1,10 @@
+package com.db1.db1start;
+
+public class ExercicioDeInteiro {
+
+	public static void main(String[] args) {
+		Integer resultadoSoma = SomaNumeros.soma(1,2);
+		System.out.println(resultadoSoma);
+	}
+	
+}
