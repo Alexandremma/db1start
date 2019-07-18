@@ -1,0 +1,12 @@
+package com.db1.db1start;
+
+public class OperacaoParImparTest {
+
+	@Test
+	public void deveVerificarSePar() {
+		OperacaoParImpar operacaoParImpar = new OperacaoParImpar(4);
+		int verificaSePar = operacaoParImpar.verificarSePar();
+		asserEquals(true, verificasepar)
+	}
+	
+}

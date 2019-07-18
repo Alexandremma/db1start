@@ -1,0 +1,19 @@
+package com.db1.db1start;
+
+public class ExercicioStringTest {
+
+	private ExercicioString exercicioString;
+	
+	@Before
+	public void setUp() {
+		exercicioString = new ExercicioString("");
+	}
+	
+	@Test
+	public void deveContarQuantidadeLetras() {
+		ExercicioString exercicioString = new ExercicioString("DB1Start");
+		int quantidadeLetras = exercicioString.contarQuantidadeLetras();
+		assertEquals(8, quantidadeLetras);
+	}
+	
+}
