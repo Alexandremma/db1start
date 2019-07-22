@@ -1,0 +1,14 @@
+package com.db1.db1start;
+
+public class TesteSubstring {
+
+	public static void main(String[] args) {
+		
+		String texto = "Ale Mar";
+		int quantLetras = texto.length();
+		
+		System.out.println(texto);
+		
+	}
+	
+}

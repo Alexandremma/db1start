@@ -9,6 +9,12 @@ public class App {
 		Calculadora calculadora = new Calculadora(10, 15);
 				
 		System.out.println(calculadora.somar());
+		
+		String texto = "banana, maçã, melancia";
+		
+		//String textoSemEspaco = texto.trim();
+		String[] palavrasSeparadas = texto.split(",\\s");
+		System.out.println(palavrasSeparadas[0] + "\n" + palavrasSeparadas[1] + "\n" + palavrasSeparadas[2]);
 	}
 	
 }

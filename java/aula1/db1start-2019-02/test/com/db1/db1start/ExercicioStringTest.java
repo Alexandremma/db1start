@@ -48,4 +48,46 @@ public class ExercicioStringTest {
 		assertEquals("Alex", quatroPrimeirasLetras);
 	}
 	
+	@Test
+	public void deveMostrarTextoPartindoDaTerceiraLetra() {
+		ExercicioString exercicioString = new ExercicioString("Alexandre Martins Maciel");
+		String textoPartindoDaTerceiraLetra = exercicioString.mostrarTextoPartindoDaTerceiraLetra();
+		assertEquals("exandre Martins Maciel", textoPartindoDaTerceiraLetra);
+	}
+	
+	@Test
+	public void deveMostrarQuatroUltimasLetras() {
+		ExercicioString exercicioString = new ExercicioString("Alexandre Martins Maciel");
+		String quatroUltimasLetras = exercicioString.mostrarQuatroUltimasLetras();
+		assertEquals("ciel", quatroUltimasLetras);
+	}
+	
+	@Test
+	public void deveSubstituirPrimeiroNome() {
+		ExercicioString exercicioString = new ExercicioString("Alexandre Martins Maciel");
+		String semPrimeiroNome = exercicioString.substituirPrimeiroNome();
+		assertEquals("ALUNO/ALUNA Martins Maciel", semPrimeiroNome);
+	}
+	
+	@Test
+	public void deveSepararPalavras() {
+		ExercicioString exercicioString = new ExercicioString("banana, maçã, melancia");
+		String palavrasSeparadas = exercicioString.separarPalavras();
+		String textoSeparado = "banana" + "\n" + "maçã" + "\n" + "melancia";
+		assertEquals(textoSeparado, palavrasSeparadas);
+	}
+
+	@Test
+	public void deveContarVogais() {
+		ExercicioString exercicioString = new ExercicioString("Contar Vogais");
+		int numeroVogais = exercicioString.contarVogais();
+		assertEquals(5, numeroVogais);
+	}
+	
+	@Test
+	public void deveInverterTexto() {
+		ExercicioString exercicioString = new ExercicioString("Texto Invertido");
+		String textoInvertido = exercicioString.inverterTexto();
+		assertEquals("oditrevnI otxeT", textoInvertido);
+	}
 }
