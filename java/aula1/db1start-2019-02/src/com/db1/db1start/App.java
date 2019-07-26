@@ -1,5 +1,7 @@
 package com.db1.db1start;
 
+import java.util.List;
+
 public class App {
 
 	public static void main(String[] args) {
@@ -15,6 +17,11 @@ public class App {
 		//String textoSemEspaco = texto.trim();
 		String[] palavrasSeparadas = texto.split(",\\s");
 		System.out.println(palavrasSeparadas[0] + "\n" + palavrasSeparadas[1] + "\n" + palavrasSeparadas[2]);
+	
+		List<Integer> listaSemImpar = List.of(1, 2, 3, 4, 5);
+		
+		ExerciciosDeLista exerciciosDeLista = new ExerciciosDeLista();
+		exerciciosDeLista.removeImparesDaLista(listaSemImpar);
 	}
 	
 }
