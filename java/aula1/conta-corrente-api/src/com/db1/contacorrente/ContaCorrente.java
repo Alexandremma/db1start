@@ -43,6 +43,14 @@ public class ContaCorrente {
 		this.historico.add("Depositado: R$" + valor);
 	}
 	
+	public void sacar(Double valor) {
+		Verificadora.valorMaiorQueZero(valor, "Valor a ser sacado deve ser maior que zero");
+		Verificadora.valorMaiorOuIgualAZero((this.saldo - valor), "Saldo Insuficiente");
+		
+		this.saldo -= valor;
+		this.historico.add("Sacado: R$" + valor);
+	}
+	
 	public String getAgencia() {
 		return agencia;
 	}

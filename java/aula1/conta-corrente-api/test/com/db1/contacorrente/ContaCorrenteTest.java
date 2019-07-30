@@ -82,4 +82,69 @@ public class ContaCorrenteTest {
 		Assert.assertEquals("Depositado: R$100.0", contaCorrente.getHistorico().get(0));
 	}
 	
+	@Test
+	public void deveRetornarExceptionQuandoValorSacadoNull() {
+		ContaCorrente contaCorrente = new ContaCorrente("0465", "00009992", "Nome Cliente");
+		String mensagem = null;
+		try {
+			contaCorrente.depositar(100.0);
+			contaCorrente.sacar(null);
+		} catch (RuntimeException e) {
+			mensagem = e.getMessage();
+		}
+		
+		Assert.assertEquals("Valor a ser sacado deve ser maior que zero", mensagem);
+		Assert.assertEquals(100.0, contaCorrente.getSaldo(), 0.0);
+		Assert.assertEquals(1, contaCorrente.getHistorico().size());
+	}
+	
+	@Test
+	public void deveRetornarExceptionQuandoValorSacadoZero() {
+		ContaCorrente contaCorrente = new ContaCorrente("0465", "00009992", "Nome Cliente");
+		String mensagem = null;
+		try {
+			contaCorrente.depositar(100.0);
+			contaCorrente.sacar(0.0);
+		} catch (RuntimeException e) {
+			mensagem = e.getMessage();
+		}
+		
+		Assert.assertEquals("Valor a ser sacado deve ser maior que zero", mensagem);
+		Assert.assertEquals(100.0, contaCorrente.getSaldo(), 0.0);
+		Assert.assertEquals(1, contaCorrente.getHistorico().size());
+	}
+	
+	@Test
+	public void deveRetornarExceptionQuandoValorSacadoInvalido() {
+		ContaCorrente contaCorrente = new ContaCorrente("0465", "00009992", "Nome Cliente");
+		String mensagem = null;
+		try {
+			contaCorrente.depositar(100.0);
+			contaCorrente.sacar(110.0);
+		} catch (RuntimeException e) {
+			mensagem = e.getMessage();
+		}
+		
+		Assert.assertEquals("Saldo Insuficiente", mensagem);
+		Assert.assertEquals(100.0, contaCorrente.getSaldo(), 0.0);
+		Assert.assertEquals(1, contaCorrente.getHistorico().size());
+	}
+	
+	@Test
+	public void deveSacarValor() {
+		ContaCorrente contaCorrente = new ContaCorrente("0465", "00009992", "Nome Cliente");
+		String mensagem = null;
+		try {
+			contaCorrente.depositar(100.0);
+			contaCorrente.sacar(100.0);
+		} catch (RuntimeException e) {
+			mensagem = e.getMessage();
+		}
+		
+		Assert.assertEquals(null, mensagem);
+		Assert.assertEquals(0.0, contaCorrente.getSaldo(), 0.0);
+		Assert.assertEquals(2, contaCorrente.getHistorico().size());
+		Assert.assertEquals("Sacado: R$100.0", contaCorrente.getHistorico().get(1));
+	}
+	
 }

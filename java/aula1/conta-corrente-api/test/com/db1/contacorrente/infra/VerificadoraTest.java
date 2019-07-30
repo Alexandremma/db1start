@@ -40,4 +40,52 @@ public class VerificadoraTest {
 		
 		Assert.assertEquals(null, mensagem);
 	}
+	
+	@Test
+	public void deveRetornarExceptionQuandoValorNulo() {
+		String mensagem = null;
+		try {
+			Verificadora.valorMaiorQueZero(null, "Valor sacado não pode ser nulo");
+		} catch (RuntimeException e) {
+			mensagem = e.getMessage();
+		}
+		
+		Assert.assertEquals("Valor sacado não pode ser nulo", mensagem);
+	}
+	
+	@Test
+	public void deveRetornarExceptionQuandoValorZero() {
+		String mensagem = null;
+		try {
+			Verificadora.valorMaiorQueZero(0.0, "Valor sacado deve ser maior que zero");
+		} catch (RuntimeException e) {
+			mensagem = e.getMessage();
+		}
+		
+		Assert.assertEquals("Valor sacado deve ser maior que zero", mensagem);
+	}
+	
+	@Test
+	public void deveRetornarExceptionQuandoValorNegativo() {
+		String mensagem = null;
+		try {
+			Verificadora.valorMaiorQueZero(-0.1, "Valor sacado deve ser positivo");
+		} catch (RuntimeException e) {
+			mensagem = e.getMessage();
+		}
+		
+		Assert.assertEquals("Valor sacado deve ser positivo", mensagem);
+	}
+	
+	@Test
+	public void naoDeveRetornarExceptionQuandoValorPositivo() {
+		String mensagem = null;
+		try {
+			Verificadora.valorMaiorQueZero(50.0, null);
+		} catch (RuntimeException e) {
+			mensagem = e.getMessage();
+		}
+		
+		Assert.assertEquals(null, mensagem);
+	}
 }
